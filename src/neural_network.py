@@ -19,14 +19,18 @@ class NeuralNetwork:
         self.d_bias = []
         in_size = input_size
         for layer in self.layers:
-            w = np.random.normal(0, sd, size=[in_size, layer.n_neurons])
-            d_w = np.zeros([in_size, layer.n_neurons])
-            b = np.zeros([layer.n_neurons, 1])
-            d_b = np.zeros([layer.n_neurons, 1])
+            w_shape = [layer.n_neurons, in_size]
+            b_shape = [layer.n_neurons, 1]
+            w = np.random.normal(0, sd, size=w_shape)
+            d_w = np.zeros(w_shape)
+            b = np.zeros(b_shape)
+            d_b = np.zeros(b_shape)
             self.weights.append(w)
             self.bias.append(b)
             self.d_weights.append(d_w)
             self.d_bias.append(d_b)
+            # Updating number of input size of the next layer (to current vector size)
+            in_size = layer.n_neurons
         self.states = []
 
     def forward(self, x: np.ndarray):
