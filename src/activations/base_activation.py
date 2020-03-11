@@ -7,7 +7,7 @@ class Activation(ABC):
 
     @abstractmethod
     def forward(self, x: np.ndarray) -> np.ndarray:
-        """Activation (pointwise) function"""
+        """Activation (point-wise) function"""
         pass
 
     @abstractmethod

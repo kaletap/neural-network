@@ -2,15 +2,17 @@ import numpy as np
 from collections import namedtuple
 from typing import List, Callable, Iterable
 
+from src.losses import Loss
+
 
 Layer = namedtuple("Layer", "n_neurons activation")
 
 
 class NeuralNetwork:
     """Feed-forward neural network (also called multi layer perceptron)"""
-    def __init__(self, input_size: int, layers: Iterable[Layer], *, sd=0.1):
+    def __init__(self, input_size: int, layers: Iterable[Layer], loss: Loss, *, sd=0.1):
         self.input_size = input_size
-        self.layers = layers
+        self.layers = [Layer(*layer) for layer in layers]
         # Initializing all the matrices with weights
         # as well as the derivatives
         self.weights = []
@@ -38,8 +40,10 @@ class NeuralNetwork:
         for w in self.weights:
             x = w @ x
             self.states.append(x)
+        return x
 
     def backward(self, y_true: np.ndarray, y_pred: np.ndarray):
         pass
 
-
+    def __call__(self, *args, **kwargs):
+        return self.forward(*args, **kwargs)
