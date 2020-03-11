@@ -8,4 +8,5 @@ class Sigmoid(Activation):
         return 1 / (1 + np.exp(-x))
 
     def backward(self, x: np.array):
-        pass
+        # Based on a property of a sigmoid function
+        return self(x) * (1 - self(x))
