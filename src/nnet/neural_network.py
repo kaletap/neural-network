@@ -1,7 +1,7 @@
 import numpy as np
 from collections import namedtuple
 from typing import Iterable
-import pdb
+from tqdm import trange
 
 from .losses import Loss
 
@@ -93,9 +93,14 @@ class NeuralNetwork:
                 z = z_states[i - 1]
                 d_z = (weights[i].transpose() @ d_z) * activation.backward(z)
 
-    def optimize(self, lr: float):
-        pass
+    def fit(self, x, y, *, n_iter: int = 100, lr: float = 0.01):
+        for i in trange(n_iter):
+            output = self(x)
+            self.backward(y)
+            for w, d_w in zip(self.weights, self.d_weights):
+                w -= lr * d_w
+        current_loss = np.mean(self.loss(output, y))
+        print(f"Training completed. Loss: {current_loss}")
 
     def __call__(self, *args, **kwargs):
         return self.forward(*args, **kwargs)
-
