@@ -8,4 +8,4 @@ class Identity(Activation):
         return x
 
     def backward(self, x: np.array):
-        pass
+        return np.ones_like(x)

@@ -1,6 +1,6 @@
 import numpy as np
 
-from src.losses import QuadraticLoss
+from nnet.losses import QuadraticLoss
 
 
 def test_quadratic_loss():

@@ -1,6 +1,6 @@
 import numpy as np
 
-from src.activations import Identity, Sigmoid
+from nnet.activations import Identity, Sigmoid
 
 
 def test_sigmoid():
