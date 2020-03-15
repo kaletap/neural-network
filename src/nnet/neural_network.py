@@ -71,27 +71,28 @@ class NeuralNetwork:
         n_layers = self.n_layers
 
         assert len(z_states) == len(a_states) - 1 == len(layers) == len(weights) == len(bias) == n_layers
-        # Last element in states is also the output of the network
-        y_predicted = a_states[-1]
-        m = y_predicted.shape[-1]
+        # Last element in states is also the output of the network (y_predicted)
+        a = a_states[-1]
+        m = a.shape[-1]
 
         # Backpropagation
         # Calculate d_z (will need d_a in the middle), d_w, d_b
-        d_a = (1 / m) * loss.backward(y_predicted, y_true)  # 1 x m (in general it should be jacobian, but we use the
-        # fact that it's a diagonal matrix anyway)
-        last_activation = layers[n_layers - 1].activation
-        a = a_states[n_layers]  # a_states includes additionally input x
-        d_z = d_a * last_activation.backward(a)  # 1 x m
+        d_a = (1 / m) * loss.backward(a, y_true)  # 1 x m
+        activation = layers[n_layers - 1].activation
+        z = z_states[n_layers - 1]
+        d_z = d_a * activation.backward(z)  # 1 x m (in general we would have to compute a jacobian of `a` with
+        # respect to `z`, but we use the fact that it's a diagonal matrix anyway)
         for i in range(n_layers - 1, -1, -1):
-            a = a_states[i]
-            activation = layers[i].activation
+            a = a_states[i]  # a_states includes additionally input x (it has size one bigger than z_states)
             # Compute d_w
             d_w = d_z @ a.transpose()
             d_weights[i] = d_w
             if i > 0:
                 # Compute d_z with respect to the previous hidden state
+                activation = layers[i - 1].activation
                 z = z_states[i - 1]
-                d_z = (weights[i].transpose() @ d_z) * activation.backward(z)
+                d_z = (weights[i].transpose() @ d_z) * activation.backward(z)  # note: partial derivative of `z` with
+                # respect to previous hidden state `a` does not depend on `a` (it's a linear transformation)
 
     def fit(self, x, y, *, n_iter: int = 100, lr: float = 0.01):
         for i in trange(n_iter):
