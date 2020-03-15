@@ -9,4 +9,5 @@ class Sigmoid(Activation):
 
     def backward(self, x: np.array) -> np.ndarray:
         # Based on a property of a sigmoid function
-        return self(x) * (1 - self(x))
+        s = self(x)
+        return s * (1 - s)

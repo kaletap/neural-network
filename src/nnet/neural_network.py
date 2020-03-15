@@ -94,7 +94,7 @@ class NeuralNetwork:
                 d_z = (weights[i].transpose() @ d_z) * activation.backward(z)  # note: partial derivative of `z` with
                 # respect to previous hidden state `a` does not depend on `a` (it's a linear transformation)
 
-    def fit(self, x, y, *, n_iter: int = 100, lr: float = 0.01):
+    def fit(self, x, y, *, n_iter: int = 1000, lr: float = 1e-3):
         for i in trange(n_iter):
             output = self(x)
             self.backward(y)
@@ -104,4 +104,7 @@ class NeuralNetwork:
         print(f"Training completed. Loss: {current_loss}")
 
     def __call__(self, *args, **kwargs):
+        return self.forward(*args, **kwargs)
+
+    def predict(self, *args, **kwargs):
         return self.forward(*args, **kwargs)
