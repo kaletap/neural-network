@@ -13,7 +13,7 @@ class Activation(ABC):
     @abstractmethod
     def backward(self, x: np.ndarray) -> np.ndarray:
         """
-        Derivative method of the activation function.
+        Derivative of the activation function.
         """
         pass
 

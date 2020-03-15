@@ -7,5 +7,5 @@ class Identity(Activation):
     def forward(self, x: np.array) -> np.ndarray:
         return x
 
-    def backward(self, x: np.array):
+    def backward(self, x: np.array) -> np.ndarray:
         return np.ones_like(x)
