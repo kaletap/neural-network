@@ -11,7 +11,7 @@ Layer = namedtuple("Layer", "n_neurons activation")
 
 class NeuralNetwork:
     """Feed-forward neural network (also called multi layer perceptron)"""
-    def __init__(self, input_size: int, layers: Iterable[Layer], loss: Loss, *, sd=0.1):
+    def __init__(self, input_size: int, layers: Iterable[Layer], loss: Loss, *, sd=1e-3):
         self.input_size = input_size
         self.layers = [Layer(*layer) for layer in layers]
         self.loss = loss
@@ -94,17 +94,21 @@ class NeuralNetwork:
                 d_z = (weights[i].transpose() @ d_z) * activation.backward(z)  # note: partial derivative of `z` with
                 # respect to previous hidden state `a` does not depend on `a` (it's a linear transformation)
 
-    def fit(self, x, y, *, n_iter: int = 1000, lr: float = 1e-3):
+    def fit(self, x, y, *, n_iter: int = 50_000, lr: float = 1e-4):
         for i in trange(n_iter):
-            output = self(x)
-            self.backward(y)
+            self.forward(x)  # forward pass to save intermediate states
+            self.backward(y)  # backward pass
             for w, d_w in zip(self.weights, self.d_weights):
                 w -= lr * d_w
+        output = self(x)
         current_loss = np.mean(self.loss(output, y))
         print(f"Training completed. Loss: {current_loss}")
 
     def __call__(self, *args, **kwargs):
         return self.forward(*args, **kwargs)
 
-    def predict(self, *args, **kwargs):
-        return self.forward(*args, **kwargs)
+    # TODO: hacky, change it with proper bias implementation
+    def predict(self, x: np.ndarray):
+        n = x.shape[1]
+        a = np.vstack([x, np.ones([1, n])])
+        return self.forward(a)
