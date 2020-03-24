@@ -77,7 +77,7 @@ class NeuralNetwork:
 
         # Backpropagation
         # Calculate d_z (will need d_a in the middle), d_w, d_b
-        d_a = (1 / m) * loss.backward(a, y_true)  # 1 x m
+        d_a = (1 / m) * loss.backward(a, y_true)  # 1 x m (if `a` is one-dimensional)
         activation = layers[n_layers - 1].activation
         z = z_states[n_layers - 1]
         d_z = d_a * activation.backward(z)  # 1 x m (in general we would have to compute a jacobian of `a` with
@@ -103,6 +103,10 @@ class NeuralNetwork:
         output = self(x)
         current_loss = np.mean(self.loss(output, y))
         print(f"Training completed. Loss: {current_loss}")
+
+    def fit_predict(self, x, y, *, n_iter: int = 50_000, lr: float = 1e-4):
+        self.fit(x, y, n_iter=n_iter, lr=lr)
+        return self(x)
 
     def __call__(self, *args, **kwargs):
         return self.forward(*args, **kwargs)
