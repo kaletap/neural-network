@@ -11,6 +11,11 @@ class Softmax(Activation):
     with respect to Softmax input is done in MultinomialLoss rather than in Softmax.
     """
     def forward(self, x: np.ndarray) -> np.ndarray:
+        """
+        Performs softmax computation given input x.
+        Note: it might have been beneficial to compute log-softmax instead (for numerical reasons),
+        since we take logarithm in backward step anyway (and thus calculate log of exp).
+        """
         e_x = np.exp(x - np.max(x, axis=0))
         return e_x / np.sum(e_x, axis=0)
 
