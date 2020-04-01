@@ -58,7 +58,6 @@ class Relu(Activation):
 Similarly, we can defined any other activation and loss function.
 
 ## Installation
-* [Optionally] Create new virtual environment with `python3 -m venv venv`
-* Install package with `pip3 install src/`
-* Install requirements with `pip3 install -r src/requirements.txt` (tqdm and numpy)
+* [Optionally] Create new virtual environment with `python3 -m venv venv` and activate it with `source venv/bin/activate`.
+* Install package with `pip3 install .`
 * Development: run tests with `python3 -m pytest`
