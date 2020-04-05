@@ -6,7 +6,7 @@ from .base_loss import Loss
 class MultinomialLoss(Loss):
     """
     Loss for multinomial classification
-    Note: Due to computational and numerical reasons we to combine Multinomial Loss with last (softmax)
+    Note: Due to computational and numerical reasons we combine Multinomial Loss with last (softmax)
     layer of a neural network. Thus, we always assume softmax layer before multinomial loss and
     multinomial loss after softmax.
     """
