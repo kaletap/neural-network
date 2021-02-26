@@ -1,7 +1,7 @@
 # NNet - implementing neural networks with numpy
 
 In this project (made for a deep learning course at Warsaw University of Technology)
-I developed a simple framework for training deep neural networks consisting of a bunch of sequential layers. It's only dependency is numpy - a python library for matrix operations and tqdm for progress bars. Below I will present how it works.
+I developed a simple framework for training deep neural networks consisting of a bunch of sequential layers. Its only dependency is numpy - a python library for matrix operations and tqdm for progress bars. Below I will present how it works.
 
 ## Math
 The goal is to construct a function f(x), that takes a vector x and makes a best prediction of y based on data we have. In deep learning this function is a neural network.
